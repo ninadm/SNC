@@ -1,0 +1,85 @@
+﻿@model IEnumerable<MyYelp.Business.Business>
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<h2>Recommendations for user!</h2>
+<div class="input-group">
+    <input type="text" id="userId" class="form-control" placeholder="Input User Id" name="srch-term">
+    <div class="input-group-btn">
+        <button class="btn btn-default" id="FetchResultsOnUserId" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+    </div>
+</div>
+<hr />
+<div id="recs">
+    <dl class="dl-horizontal">
+        @foreach (var mod in Model)
+            {
+            <dt>
+                @Html.DisplayNameFor(model => model.name)
+            </dt>
+                    <dd>
+                        @mod.name
+                    </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.numberOfReviews)
+                        </dt>
+                        <dd>
+                            @mod.numberOfReviews
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.business_id)
+                        </dt>
+                        <dd>
+                            @mod.business_id
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.full_address)
+                        </dt>
+                        <dd>
+                            @mod.full_address
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.open)
+                        </dt>
+                        <dd>
+                            @mod.open
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.city)
+                        </dt>
+                        <dd>
+                            @mod.city
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.review_count)
+                        </dt>
+                        <dd>
+                            @mod.review_count
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.neighborhoods)
+                        </dt>
+            foreach (var n in mod.neighborhoods)
+            {
+                <dd>
+                    @n
+                </dd>
+            }
+            <dt>
+                @Html.DisplayNameFor(model => model.latitude)
+            </dt>
+                    <dd>
+                        @mod.latitude
+                    </dd>
+                        <hr />
+        }
+    </dl>
+</div>
+
+
+<p>
+    @*@Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |*@
+    @Html.ActionLink("Back to List", "Index")
+</p>
