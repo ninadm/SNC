@@ -1,7 +1,8 @@
 
 
 ##
-# Code to create graph based on friends and
+# Code to create graph based on friends and similarity cluster
+# It also finds top 10 businesses per user
 ##
 import community # --> http://perso.crans.org/aynaud/communities/
 import json
@@ -19,7 +20,6 @@ reviewsCollection = database.reviews
 businessCollection = database.business
 userCollection = database.users
 topBusinessPerUser = databaseStats.topBusinessPerUser
-topBusinessPerUserDuplicate = databaseStats.topBusinessPerUserDuplicate
 
 class CommunityDetection:
     MyYelpUserGraph = nx.Graph()
@@ -66,10 +66,9 @@ class CommunityDetection:
             self.aggregateCommunities[value].append(key)
 
     def findAverageBusinessStars(self):
-        # topBusinessPerUserDuplicate.delete_many({})
         topBusinessPerUser.delete_many({})
         communityForUser = []
-        users = userCollection.find().limit(10)
+        users = userCollection.find()
         dict = {}
         for outerUser in users:
             dict[outerUser["user_id"]] = []
@@ -78,7 +77,7 @@ class CommunityDetection:
                     communityForUser = comm
                     userBusiness = {}
                     for user in communityForUser:
-                        reviewsForUser = reviewsCollection.find({"user_id": user}, {"business_id": True, "stars": True, "_id": False, "votes": True, "review_id": True}).limit(20)
+                        reviewsForUser = reviewsCollection.find({"user_id": user}, {"business_id": True, "stars": True, "_id": False, "votes": True, "review_id": True}).limit(10)
                         for businessReviewed in reviewsForUser:
                             print("inside for 4")
                             userBusiness.setdefault(user,[]).append(businessReviewed)
@@ -98,7 +97,6 @@ class CommunityDetection:
                             dict[outerUser["user_id"]].append(one_business[0])
                     print(dict)
             topBusinessPerUser.insert_one({"user_id" : outerUser["user_id"], "business" : dict[outerUser["user_id"]]})
-            topBusinessPerUserDuplicate.insert_one({"user_id" : outerUser["user_id"], "business" : dict[outerUser["user_id"]]})
 
 cd = CommunityDetection()
 cd.createFriendGraph()
