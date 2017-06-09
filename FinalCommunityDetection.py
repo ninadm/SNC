@@ -1,4 +1,4 @@
-
+#comment added 9th June 2017
 
 ##
 # Code to create graph based on friends and similarity cluster
@@ -104,4 +104,3 @@ cd.createClusterBasedGraph()
 cd.findCommunitiesFromGraph()
 cd.findAggregateCommunities()
 cd.findAverageBusinessStars()
-
